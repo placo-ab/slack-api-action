@@ -3897,6 +3897,8 @@ const { WebClient } = __webpack_require__(586);
 
     let blocks = [];
 
+    console.log(`This is the SLACK_OAUTH_TOKEN: ${process.env.SLACK_OAUTH_TOKEN}`);
+
     if (core.getInput('message')) {
       blocks.push({
         type: 'section',
