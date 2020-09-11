@@ -14,8 +14,8 @@ jobs:
         with:
           token: ${{ secrets.SLACK_OAUTH_TOKEN }}
           message: This is a text!
-          channel: platform
+          channel: UQUQZFTS6
 
       - name: Print outputs
         run: |
-          echo 'outputs: ${{ steps.slack_init.outputs.ts }} / ${{ steps.slack_init.outputs.channel }}'
+          echo 'outputs: <${{ steps.slack_init.outputs.message_id }}>'

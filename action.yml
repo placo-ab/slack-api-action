@@ -17,10 +17,8 @@ inputs:
 
 
 outputs:
-  ts:
-    description: 'The time we greeted you'
-  channel:
-    description: 'The resolved channel name'
+  message_id:
+    description: 'The channel name and timestamp, comma separated'
 
 runs:
   using: 'node12'
