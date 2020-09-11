@@ -1,0 +1,21 @@
+---
+name: Send test message on push
+
+on:
+  push
+
+jobs:
+  send:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Test SlackAction
+        id: slack_init
+        uses: placo-ab/slack-api-action@master
+        with:
+          token: ${{ secrets.SLACK_OAUTH_TOKEN }}
+          message: This is a text!
+          channel: platform
+
+      - name: Print outputs
+        run: |
+          echo 'outputs: ${{ steps.slack_init.outputs.ts }} / ${{ steps.slack_init.outputs.channel }}'
