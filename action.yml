@@ -1,0 +1,27 @@
+name: 'Slack messaging'
+description: 'Easily send and update slack messages'
+
+inputs:
+  token:
+    description: Slack Bot token (beginning with xoxb-)
+    required: true
+
+  channel:
+    description: What channel to send the message to
+    required: false
+
+  message:
+    description: 'The message to show'
+    required: true
+    default: 'Hello World'
+
+
+outputs:
+  ts:
+    description: 'The time we greeted you'
+  channel:
+    description: 'The resolved channel name'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
