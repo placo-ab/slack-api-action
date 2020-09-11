@@ -14,8 +14,16 @@ jobs:
         with:
           token: ${{ secrets.SLACK_OAUTH_TOKEN }}
           message: This is a text!
+          context: Waiting...
           channel: UQUQZFTS6
 
-      - name: Print outputs
-        run: |
-          echo 'outputs: <${{ steps.slack_init.outputs.message_id }}>'
+      - name: Wait 10s...
+        run: sleep 10
+
+      - name: Update message
+        uses: placo-ab/slack-api-action@master
+        with:
+          token: ${{ secrets.SLACK_OAUTH_TOKEN }}
+          message: This is another text!
+          context: Not waiting any more!
+          message_id: ${{ steps.slack_init.outputs.message_id }}

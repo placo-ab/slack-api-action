@@ -1,5 +1,5 @@
 name: 'Slack messaging'
-description: 'Easily send and update slack messages'
+description: 'Send and update slack messages'
 
 inputs:
   token:
@@ -12,9 +12,15 @@ inputs:
 
   message:
     description: 'The message to show'
-    required: true
-    default: 'Hello World'
+    required: false
 
+  context:
+    description: 'The status message'
+    required: false
+
+  message_id:
+    description: 'The message_id to update'
+    required: false
 
 outputs:
   message_id:

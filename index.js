@@ -1,38 +1,50 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
 const { WebClient } = require('@slack/web-api');
 
 (async () => {
   try {
     const slack = new WebClient(core.getInput('token'));
 
-    const result = await slack.chat.postMessage({
-      channel: core.getInput('channel'),
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: core.getInput('message')
-          }
-        },
-        {
-          type: 'context',
-          elements: [
-            {
-              type: 'mrkdwn',
-              text: ':hourglass_flowing_sand: Setting up Node.js...'
-            }
-          ]
+    let blocks = [];
+
+    if (core.getInput('message')) {
+      blocks.push({
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: core.getInput('message')
         }
-      ]
-  });
+      });
+    }
 
-    console.log(`Successfully sent message ${result.ts} in channel ${result.channel}`);
-    console.log(`github.context:`);
-    console.log(github.context);
+    if (core.getInput('context')) {
+      blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: `:hourglass_flowing_sand: ${core.getInput('context')}`
+          }
+        ]
+      })
+    }
 
-    core.setOutput('message_id', `${result.channel},${result.ts}`);
+    if (core.getInput('message_id')) {
+      const result = await slack.chat.update({
+        channel: core.getInput('message_id').split(',')[0],
+        ts: core.getInput('message_id').split(',')[1],
+        blocks
+      });
+      core.setOutput('message_id', `${result.channel},${result.ts}`);
+    } else if (core.getInput('channel')) {
+      const result = await slack.chat.postMessage({
+        channel: core.getInput('channel'),
+        blocks
+      });
+      core.setOutput('message_id', `${result.channel},${result.ts}`);
+    } else {
+      core.setFailed('You need to provide either a channel or a message_id!');
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
